@@ -1,81 +1,146 @@
-# Makefile para limpiar archivos del proyecto
+# Makefile para Taller OpenMP Poisson
+# Compilador y flags
+CXX = g++
+CXXFLAGS = -fopenmp -O2 -Wall -std=c++17
+LDFLAGS = -fopenmp
 
-# Variables
-IMAGE_EXTENSIONS = *.png *.jpg *.jpeg *.gif *.bmp *.svg
-DAT_FILES = *.dat
+# Directorios
+SRC_DIR = src
+BIN_DIR = bin
 
-# Objetivo principal para limpiar todo
-clean: clean-images clean-dat
-	@echo "Limpieza completa terminada"
+# Archivos fuente
+SOURCES = $(wildcard $(SRC_DIR)/actividad_*.cpp)
+# Generar nombres de ejecutables: actividad_0, actividad_1, actividad_2, etc.
+EXECUTABLES = $(patsubst $(SRC_DIR)/%.cpp,%,$(SOURCES))
 
-# Limpiar solo imágenes
-clean-images:
-	@echo "Eliminando archivos de imagen..."
-	@for ext in $(IMAGE_EXTENSIONS); do \
-		if ls $$ext 1> /dev/null 2>&1; then \
-			rm -f $$ext; \
-			echo "Eliminados: $$ext"; \
-		fi; \
-	done
-	@echo "Limpieza de imágenes completada"
+# Carpetas que se generan al ejecutar (incluyendo actividad0)
+OUTPUT_DIRS = actividad0 actividad1 actividad2 actividad3 actividad4 actividad5
 
-# Limpiar solo archivos .dat
-clean-dat:
-	@echo "Eliminando archivos .dat..."
-	@if ls *.dat 1> /dev/null 2>&1; then \
-		rm -f *.dat; \
-		echo "Eliminados todos los archivos .dat"; \
-	else \
-		echo "No se encontraron archivos .dat"; \
-	fi
+# Regla por defecto
+all: $(BIN_DIR) $(EXECUTABLES)
 
-# Limpiar archivos específicos de tu proyecto
-clean-project:
-	@echo "Eliminando archivos específicos del proyecto..."
-	@rm -f analisis_errores.png
-	@rm -f comparacion_soluciones_24.png
-	@rm -f comparacion_soluciones_34.png
-	@rm -f comparacion_soluciones.png
-	@rm -f solucion_ejemplo1_analitica.dat
-	@rm -f solucion_ejemplo1_numerica.dat
-	@rm -f comparacion_numerica_24.png
-	@rm -f solucion_numerica_34.png
-	@echo "Archivos específicos del proyecto eliminados"
+# Crear directorio bin si no existe
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
-# Mostrar archivos que serían eliminados (modo dry-run)
-preview:
-	@echo "Archivos que serían eliminados:"
-	@echo "=== IMÁGENES ==="
-	@for ext in $(IMAGE_EXTENSIONS); do \
-		if ls $$ext 1> /dev/null 2>&1; then \
-			ls $$ext; \
-		fi; \
-	done 2>/dev/null || echo "No hay imágenes"
-	@echo "=== ARCHIVOS .DAT ==="
-	@ls *.dat 2>/dev/null || echo "No hay archivos .dat"
+# Regla genérica para compilar cada actividad
+actividad_%: $(SRC_DIR)/actividad_%.cpp | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $(BIN_DIR)/$@ $(LDFLAGS)
+	@echo "Compilado: $@ -> $(BIN_DIR)/$@"
 
-# Limpiar con confirmación
-clean-confirm:
-	@echo "¿Estás seguro de que quieres eliminar todas las imágenes y archivos .dat? [y/N]"
-	@read -r response; \
-	if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
-		$(MAKE) clean; \
-	else \
-		echo "Operación cancelada"; \
-	fi
+# Reglas individuales (alternativa explícita)
+actividad_0: $(SRC_DIR)/actividad_0.cpp | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $(BIN_DIR)/$@ $(LDFLAGS)
 
-# Ayuda
-help:
-	@echo "Makefile para limpiar archivos del proyecto"
+actividad_1: $(SRC_DIR)/actividad_1.cpp | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $(BIN_DIR)/$@ $(LDFLAGS)
+
+actividad_2: $(SRC_DIR)/actividad_2.cpp | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $(BIN_DIR)/$@ $(LDFLAGS)
+
+actividad_3: $(SRC_DIR)/actividad_3.cpp | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $(BIN_DIR)/$@ $(LDFLAGS)
+
+actividad_4: $(SRC_DIR)/actividad_4.cpp | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $(BIN_DIR)/$@ $(LDFLAGS)
+
+actividad_5: $(SRC_DIR)/actividad_5.cpp | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $(BIN_DIR)/$@ $(LDFLAGS)
+
+# Ejecutar actividades
+run-0: actividad_0
+	cd $(BIN_DIR) && ./actividad_0
+
+run-1: actividad_1
+	cd $(BIN_DIR) && ./actividad_1
+
+run-2: actividad_2
+	cd $(BIN_DIR) && ./actividad_2
+
+run-3: actividad_3
+	cd $(BIN_DIR) && ./actividad_3
+
+run-4: actividad_4
+	cd $(BIN_DIR) && ./actividad_4
+
+run-5: actividad_5
+	cd $(BIN_DIR) && ./actividad_5
+
+# Ejecutar todas las actividades en secuencia
+run-all: all
+	@echo "Ejecutando todas las actividades..."
+	@$(MAKE) run-0
+	@$(MAKE) run-1
+	@$(MAKE) run-2
+	@$(MAKE) run-3
+	@$(MAKE) run-4
+	@$(MAKE) run-5
+
+# Limpiar archivos compilados y carpetas generadas
+clean:
+	@echo "Limpiando archivos compilados..."
+	rm -rf $(BIN_DIR)
+	@echo "Limpiando carpetas de salida..."
+	rm -rf $(OUTPUT_DIRS)
+	@echo "Limpieza completada."
+
+# Limpiar solo ejecutables
+clean-bin:
+	rm -rf $(BIN_DIR)
+
+# Limpiar solo carpetas de salida
+clean-output:
+	rm -rf $(OUTPUT_DIRS)
+
+# Mostrar información del proyecto
+info:
+	@echo "=== INFORMACIÓN DEL PROYECTO ==="
+	@echo "Directorio fuente: $(SRC_DIR)"
+	@echo "Directorio binarios: $(BIN_DIR)"
+	@echo "Compilador: $(CXX)"
+	@echo "Flags de compilación: $(CXXFLAGS)"
+	@echo "Flags de enlazado: $(LDFLAGS)"
 	@echo ""
-	@echo "Objetivos disponibles:"
-	@echo "  clean          - Elimina todas las imágenes y archivos .dat"
-	@echo "  clean images   - Elimina solo las imágenes"
-	@echo "  clean dat      - Elimina solo los archivos .dat"
-	@echo "  clean-project  - Elimina archivos específicos del proyecto"
-	@echo "  preview        - Muestra qué archivos serían eliminados"
-	@echo "  clean-confirm  - Limpia con confirmación del usuario"
-	@echo "  help           - Muestra esta ayuda"
+	@echo "Archivos fuente encontrados:"
+	@for file in $(SOURCES); do echo "  $$file"; done
+	@echo ""
+	@echo "Ejecutables que se generarán:"
+	@for exe in $(EXECUTABLES); do echo "  $(BIN_DIR)/$$exe"; done
+	@echo ""
+	@echo "Carpetas de salida:"
+	@for dir in $(OUTPUT_DIRS); do echo "  $$dir"; done
 
-# Prevenir que make interprete los nombres como archivos
-.PHONY: clean clean-images clean-dat clean-project preview clean-confirm help
+# Verificar dependencias del sistema
+check-deps:
+	@echo "=== VERIFICANDO DEPENDENCIAS ==="
+	@echo -n "Verificando g++... "
+	@which g++ > /dev/null && echo "✓ Encontrado" || echo "✗ No encontrado"
+	@echo -n "Verificando soporte OpenMP... "
+	@echo '#include <omp.h>' | g++ -fopenmp -x c++ - -o /tmp/test_omp 2>/dev/null && echo "✓ Disponible" || echo "✗ No disponible"
+	@rm -f /tmp/test_omp
+	@echo -n "Verificando soporte C++17... "
+	@echo 'int main(){return 0;}' | g++ -std=c++17 -x c++ - -o /tmp/test_cpp17 2>/dev/null && echo "✓ Disponible" || echo "✗ No disponible"
+	@rm -f /tmp/test_cpp17
+
+# Compilar en modo debug
+debug: CXXFLAGS += -g -DDEBUG
+debug: all
+
+# Compilar en modo release (optimización máxima)
+release: CXXFLAGS += -O3 -DNDEBUG
+release: all
+
+# Crear estructura de directorios del proyecto
+setup:
+	@echo "=== CREANDO ESTRUCTURA DEL PROYECTO ==="
+	@mkdir -p $(SRC_DIR)
+	@mkdir -p $(BIN_DIR)
+	@echo "Directorios creados:"
+	@echo "  $(SRC_DIR)/ - Para archivos fuente (.cpp)"
+	@echo "  $(BIN_DIR)/ - Para ejecutables compilados"
+	@echo ""
+	@echo "Las carpetas de salida se crearán automáticamente al ejecutar:"
+	@for dir in $(OUTPUT_DIRS); do echo "  $dir/ - Resultados de $dir"; done
+
+# Declarar targets que no son archivos
+.PHONY: all clean clean-bin clean-output run-0 run-1 run-2 run-3 run-4 run-5 run-all info check-deps debug release setup
