@@ -1,0 +1,1 @@
+# Ecuacion-de-Poisson-2D--openMP-
