@@ -361,7 +361,7 @@ void export_to_file(const std::vector<std::vector<double>>& V, double h, double 
     std::cout << "Resultados exportados a " << full_path << std::endl;
 }
 
-void run_simulation(Ejemplo ejemplo, int M = 300, int N = 300) {
+void run_simulation(Ejemplo ejemplo, int M = 500, int N = 500) {
     DominioConfig config = getDominioConfig(ejemplo);
     
     double h = (config.x_max - config.x_min) / M;
