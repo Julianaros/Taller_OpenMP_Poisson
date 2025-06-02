@@ -36,7 +36,7 @@ void create_data_directory() {
             std::cout << "Directorio 'actividad1' creado exitosamente." << std::endl;
         }
     } catch (const std::filesystem::filesystem_error& ex) {
-        std::cerr << "Error al crear el directorio 'data': " << ex.what() << std::endl;
+        std::cerr << "Error al crear el directorio 'actividad1': " << ex.what() << std::endl;
     }
 }
 
@@ -287,7 +287,7 @@ double calculate_error(const std::vector<std::vector<double>>& V_numerical,
 
 void export_to_file(const std::vector<std::vector<double>>& V, double h, double k, int M, int N, 
                    const std::string& filename, const DominioConfig& config) {
-    std::string full_path = "data/" + filename;
+    std::string full_path = "actividad1/" + filename;  // CORREGIDO: cambio de "data/" a "actividad1/"
     
     std::ofstream file(full_path);
     if (!file.is_open()) {
@@ -306,7 +306,7 @@ void export_to_file(const std::vector<std::vector<double>>& V, double h, double 
     std::cout << "Resultados exportados a " << full_path << std::endl;
 }
 
-void run_simulation(Ejemplo ejemplo, int M = 300, int N = 300) {
+void run_simulation(Ejemplo ejemplo, int M = 50, int N = 50) {
     DominioConfig config = getDominioConfig(ejemplo);
     
     double h = (config.x_max - config.x_min) / M;
