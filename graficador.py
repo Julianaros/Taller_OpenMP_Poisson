@@ -58,32 +58,17 @@ def plot_3d_comparison(X, Y, Z_num, Z_anal, example_num):
     ax1.set_zlabel('V(x,y)')
     fig.colorbar(surf1, ax=ax1, shrink=0.5)
     
-    # Gráfico 3D de la solución analítica (si está disponible)
-    if Z_anal is not None:
-        ax2 = fig.add_subplot(122, projection='3d')
-        surf2 = ax2.plot_surface(X, Y, Z_anal, cmap='viridis', alpha=0.8)
-        ax2.set_title(f'Ejemplo {example_num} - Solución Analítica (3D)')
-        ax2.set_xlabel('x')
-        ax2.set_ylabel('y')
-        ax2.set_zlabel('V(x,y)')
-        fig.colorbar(surf2, ax=ax2, shrink=0.5)
+    # Gráfico 3D de la solución analítica
+    ax2 = fig.add_subplot(122, projection='3d')
+    surf2 = ax2.plot_surface(X, Y, Z_anal, cmap='viridis', alpha=0.8)
+    ax2.set_title(f'Ejemplo {example_num} - Solución Analítica (3D)')
+    ax2.set_xlabel('x')
+    ax2.set_ylabel('y')
+    ax2.set_zlabel('V(x,y)')
+    fig.colorbar(surf2, ax=ax2, shrink=0.5)
     
     plt.tight_layout()
     plt.savefig(f'figuras/ejemplo_{example_num}_3d_comparison.png')
-    plt.close()
-
-def plot_3d_single(X, Y, Z, example_num, title):
-    """Crea un gráfico 3D individual"""
-    fig = plt.figure(figsize=(8, 6))
-    ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(X, Y, Z, cmap='viridis', alpha=0.8)
-    ax.set_title(title)
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('V(x,y)')
-    fig.colorbar(surf, ax=ax, shrink=0.5)
-    plt.tight_layout()
-    plt.savefig(f'figuras/ejemplo_{example_num}_3d_numerical.png')
     plt.close()
 
 def plot_error(X, Y, error, example_num):
@@ -123,9 +108,6 @@ def process_example(example_num):
     # Cargar datos numéricos
     X_num, Y_num, Z_num = load_data(num_file)
     
-    # Graficar siempre la solución numérica en 3D (especialmente para el ejemplo 0)
-    plot_3d_single(X_num, Y_num, Z_num, example_num, f'Ejemplo {example_num} - Solución Numérica (3D)')
-    
     # Verificar si existe solución analítica
     if os.path.exists(anal_file):
         # Cargar datos analíticos
@@ -145,7 +127,21 @@ def process_example(example_num):
     else:
         print(f"No hay solución analítica para el ejemplo {example_num}")
         
-        # Graficar solo solución numérica en 2D si no hay analítica
+        # Para el Ejemplo 0, graficar solución numérica en 3D aunque no tenga analítica
+        if example_num == 0:
+            fig = plt.figure(figsize=(8, 6))
+            ax = fig.add_subplot(111, projection='3d')
+            surf = ax.plot_surface(X_num, Y_num, Z_num, cmap='viridis', alpha=0.8)
+            ax.set_title(f'Ejemplo {example_num} - Solución Numérica (3D)')
+            ax.set_xlabel('x')
+            ax.set_ylabel('y')
+            ax.set_zlabel('V(x,y)')
+            fig.colorbar(surf, ax=ax, shrink=0.5)
+            plt.tight_layout()
+            plt.savefig(f'figuras/ejemplo_{example_num}_3d_numerical.png')
+            plt.close()
+        
+        # Graficar solución numérica en 2D
         fig = plt.figure(figsize=(8, 6))
         ax = fig.add_subplot(111)
         c = ax.contourf(X_num, Y_num, Z_num, levels=20, cmap='viridis')
