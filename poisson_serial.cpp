@@ -29,6 +29,12 @@ struct DominioConfig {
     std::string solucion_analitica;
 };
 
+// Estructura para retornar resultados del solver
+struct SolverResult {
+    int iterations;
+    double final_tolerance;
+};
+
 // Función para crear el directorio data si no existe
 void create_data_directory() {
     try {
@@ -198,8 +204,8 @@ void calculate_source_term(Ejemplo ejemplo, int M, int N, std::vector<std::vecto
 }
 
 // Resuelve la ecuación de Poisson iterativamente
-int solve_poisson(Ejemplo ejemplo, std::vector<std::vector<double>>& V, 
-                 const std::vector<std::vector<double>>& source, int M, int N, double h, double k) {
+SolverResult solve_poisson(Ejemplo ejemplo, std::vector<std::vector<double>>& V, 
+                          const std::vector<std::vector<double>>& source, int M, int N, double h, double k) {
     double delta = 1.0;
     int iterations = 0;
     
@@ -243,7 +249,7 @@ int solve_poisson(Ejemplo ejemplo, std::vector<std::vector<double>>& V,
         }
     }
     
-    return iterations;
+    return {iterations, delta};
 }
 
 // Calcula la solución analítica (donde esté disponible)
@@ -341,7 +347,7 @@ void run_simulation(Ejemplo ejemplo, int M = 50, int N = 50) {
     std::cout << "Dominio: x ∈ [" << config.x_min << ", " << config.x_max << "], y ∈ [" 
               << config.y_min << ", " << config.y_max << "]" << std::endl;
     std::cout << "Grilla: " << (M+1) << " x " << (N+1) << " puntos" << std::endl;
-    std::cout << "Tolerancia: " << TOL << std::endl;
+    std::cout << "Tolerancia objetivo: " << TOL << std::endl;
     if (config.solucion_analitica != "No disponible") {
         std::cout << "Solución analítica: " << config.solucion_analitica << std::endl;
     }
@@ -353,7 +359,7 @@ void run_simulation(Ejemplo ejemplo, int M = 50, int N = 50) {
     calculate_source_term(ejemplo, M, N, source, h, k, config);
     
     std::cout << "Resolviendo la ecuación..." << std::endl;
-    int iterations = solve_poisson(ejemplo, V, source, M, N, h, k);
+    SolverResult result = solve_poisson(ejemplo, V, source, M, N, h, k);
     auto end = std::chrono::high_resolution_clock::now();
     
     // Cálculo del tiempo de ejecución
@@ -363,7 +369,8 @@ void run_simulation(Ejemplo ejemplo, int M = 50, int N = 50) {
     // Mostrar resultados
     std::cout << "\n=== RESULTADOS ===" << std::endl;
     std::cout << "Tiempo de ejecución: " << tiempo_segundos << " segundos" << std::endl;
-    std::cout << "Número de iteraciones: " << iterations << std::endl;
+    std::cout << "Número de iteraciones: " << result.iterations << std::endl;
+    std::cout << "Tolerancia alcanzada: " << result.final_tolerance << std::endl;
     std::cout << "Número de threads: 1 (secuencial)" << std::endl;
     
     // Análisis de error (si hay solución analítica disponible)
