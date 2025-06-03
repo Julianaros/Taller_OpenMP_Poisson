@@ -1,0 +1,14 @@
+=== ACTIVIDAD 6: COMPARACIÓN CRITICAL vs ATOMIC ===
+Ejemplo: 4 - ∇²V = x/y + y/x
+Threads utilizados: 32
+
+RESULTADOS CON #pragma omp critical:
+  Tiempo: 7.462 segundos
+  Iteraciones: 14437
+
+RESULTADOS CON #pragma omp atomic:
+  Tiempo: 7.353 segundos
+  Iteraciones: 14437
+
+CONCLUSIONES:
+  - ATOMIC es 1.46073% más rápido que CRITICAL
