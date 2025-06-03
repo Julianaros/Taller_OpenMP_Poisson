@@ -11,7 +11,7 @@
 #include <filesystem>
 #include <omp.h>
 
-const double TOL = 1e-4;
+const double TOL = 1e-5;
 const double e = 8.85e-12;
 
 enum class Ejemplo {
