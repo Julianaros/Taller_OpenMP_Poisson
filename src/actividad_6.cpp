@@ -297,7 +297,7 @@ void export_to_file(const std::vector<std::vector<double>>& V, double h, double 
     std::cout << "Resultados exportados a " << full_path << std::endl;
 }
 
-void run_comparison(Ejemplo ejemplo, int M = 50, int N = 50) {
+void run_comparison(Ejemplo ejemplo, int M = 500, int N = 500) {
     DominioConfig config = getDominioConfig(ejemplo);
     
     double h = (config.x_max - config.x_min) / M;
