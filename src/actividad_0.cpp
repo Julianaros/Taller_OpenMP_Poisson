@@ -29,16 +29,15 @@ struct DominioConfig {
     std::string solucion_analitica;
 };
 
-// Función para crear el directorio necesario
-void create_directories() {
+// Función para crear el directorio data si no existe
+void create_data_directory() {
     try {
-        // Crear directorio actividad0 si no existe
-        if (!std::filesystem::exists("actividad0")) {
-            std::filesystem::create_directory("actividad0");
-            std::cout << "Directorio 'actividad0' creado exitosamente." << std::endl;
+        if (!std::filesystem::exists("data")) {
+            std::filesystem::create_directory("data");
+            std::cout << "Directorio 'data' creado exitosamente." << std::endl;
         }
     } catch (const std::filesystem::filesystem_error& ex) {
-        std::cerr << "Error al crear el directorio: " << ex.what() << std::endl;
+        std::cerr << "Error al crear el directorio 'data': " << ex.what() << std::endl;
     }
 }
 
@@ -305,11 +304,11 @@ double calculate_error(const std::vector<std::vector<double>>& V_numerical,
     return max_error;
 }
 
-// Exporta los resultados a un archivo .dat en la carpeta actividad0
+// Exporta los resultados a un archivo .dat en la carpeta data
 void export_to_file(const std::vector<std::vector<double>>& V, double h, double k, int M, int N, 
                    const std::string& filename, const DominioConfig& config) {
-    // Crear la ruta completa con la carpeta actividad0
-    std::string full_path = "actividad0/" + filename;
+    // Crear la ruta completa con la carpeta data
+    std::string full_path = "data/" + filename;
     
     std::ofstream file(full_path);
     if (!file.is_open()) {
@@ -386,10 +385,10 @@ void run_simulation(Ejemplo ejemplo, int M = 500, int N = 500) {
 }
 
 int main() {
-    std::cout << "=== SIMULADOR DE ECUACIÓN DE POISSON 2D (SERIAL) - ACTIVIDAD 0 ===" << std::endl;
+    std::cout << "=== SIMULADOR DE ECUACIÓN DE POISSON 2D (SERIAL) ===" << std::endl;
     
-    // Crear el directorio necesario al inicio del programa
-    create_directories();
+    // Crear el directorio data al inicio del programa
+    create_data_directory();
     
     std::cout << "\nEjemplos disponibles:" << std::endl;
     std::cout << "0 - Ejemplo Original: Término fuente gaussiano" << std::endl;
