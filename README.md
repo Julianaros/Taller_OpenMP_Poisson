@@ -181,4 +181,18 @@ $$
 Se observaron mejoras notables en el rendimiento, siendo el uso de `parallel for` con reducción la mejor opción en la mayoría de los casos.
 
 ---
+## Organización del Proyecto
 
+Taller_OpenMP_Poisson/
+├── Makefile
+├── README.md
+├── data/
+│   └── solucion_serial.dat #Archivos de salida … todos los de salida
+├── src/
+│   ├── archivos.cpp 
+├── actividades/
+│   └── Informe de Resultados
+├── imagenes/
+│ 	  └── Todas las imágenes conseguidas.
+└── bin/
+    ├── ejecutables
