@@ -160,7 +160,7 @@ V^{(n+1)}_{i,j} = \frac{
 
 ---
 
-## ⚙️ Paralelización con OpenMP
+## Paralelización con OpenMP
 
 | Actividad | Estrategia                             |
 |----------|----------------------------------------|
@@ -180,7 +180,7 @@ V^{(n+1)}_{i,j} = \frac{
 
 ---
 
-## 📊 Comparación de Rendimiento
+## Comparación de Rendimiento
 
 Se observaron mejoras notables en el rendimiento, siendo el uso de `parallel for` con reducción la mejor opción en la mayoría de los casos.
 
