@@ -138,19 +138,19 @@ $$
 
 - **Discretización:** Diferencias finitas centradas.
 
-\[
+$$
 \nabla^2 V \approx \frac{V_{i+1,j} - 2V_{i,j} + V_{i-1,j}}{h^2} + \frac{V_{i,j+1} - 2V_{i,j} + V_{i,j-1}}{k^2}
-\]
+$$
 
 - **Iteración:** Método de Jacobi / Gauss-Seidel.
 
-\[
+$$
 V^{(n+1)}_{i,j} = \frac{
 (V^{(n)}_{i+1,j} + V^{(n)}_{i-1,j})k^2 + (V^{(n)}_{i,j+1} + V^{(n)}_{i,j-1})h^2 \pm f_{i,j} h^2 k^2
 }{
 2(h^2 + k^2)
 }
-\]
+$$
 
 - **Criterio de convergencia:**
 
