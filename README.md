@@ -144,13 +144,8 @@ $$
 
 - **Iteración:** Método de Jacobi / Gauss-Seidel.
 
-$$
-V^{(n+1)}_{i,j} = \frac{
-(V^{(n)}_{i+1,j} + V^{(n)}_{i-1,j})k^2 + (V^{(n)}_{i,j+1} + V^{(n)}_{i,j-1})h^2 + f_{i,j} h^2 k^2
-}{
-2(h^2 + k^2)
-}
-$$
+V(i,j)^(n+1) = [ (V(i+1,j) + V(i-1,j)) * k² + (V(i,j+1) + V(i,j-1)) * h² + f(i,j) * h² * k² ] / [ 2(h² + k²) ]
+
 
 
 - **Criterio de convergencia:**
