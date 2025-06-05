@@ -11,7 +11,7 @@ Este repositorio contiene un proyecto desarrollado en la asignatura de **Sistema
 
 ---
 
-##  Objetivo del Proyecto
+## Objetivo del Proyecto
 
 Aplicar distintas directivas de OpenMP sobre un código secuencial que resuelve la ecuación de Poisson 2D mediante diferencias finitas, analizando el impacto de cada técnica sobre:
 
@@ -21,23 +21,22 @@ Aplicar distintas directivas de OpenMP sobre un código secuencial que resuelve 
 
 ---
 
-##  Ejemplos Analizados
-
-A continuación se listan los 5 ejemplos tratados, incluyendo su dominio, condiciones de frontera, término fuente y solución analítica (si está disponible):
+## Ejemplos Analizados
 
 ### Ejemplo 0: Fuente Gaussiana
 
-**Ecuación diferencial:**  
-∇²V = f(x, y) = (1 / 2πσ²) * exp(−((x−μ)² + (y−μ)²) / 2σ²)  
-con μ = 0.5, σ = 0.1
+**Ecuación diferencial:**
 
-**Dominio:** [0, 1] × [0, 1]  
+$$
+\nabla^2 V = f(x, y) = \frac{1}{2\pi\sigma^2} \exp\left( -\frac{(x - \mu)^2 + (y - \mu)^2}{2\sigma^2} \right)
+$$
+
+donde $\mu = 0.5$, $\sigma = 0.1$
+
+**Dominio:** $[0, 1] \times [0, 1]$  
 **Condiciones de frontera:**  
-- V(0, y) = V(1, y) = V(x, 0) = 0  
-- V(x, 1) = x
-
-**Interpretación:**  
-Campo eléctrico generado por una carga puntual con distribución gaussiana.
+- $V(0, y) = V(1, y) = V(x, 0) = 0$  
+- $V(x, 1) = x$
 
 **Solución analítica:** No disponible.
 
@@ -45,98 +44,123 @@ Campo eléctrico generado por una carga puntual con distribución gaussiana.
 
 ### Ejemplo 1: Fuente Exponencial
 
-**Ecuación diferencial:**  
-∇²V = (x² + y²)·e^(xy)
+**Ecuación diferencial:**
 
-**Dominio:** [0, 2] × [0, 1]  
+$$
+\nabla^2 V = (x^2 + y^2)e^{xy}
+$$
+
+**Solución exacta:**
+
+$$
+V(x, y) = e^{xy}
+$$
+
+**Dominio:** $[0, 2] \times [0, 1]$  
 **Condiciones de frontera:**
-- V(0, y) = 1  
-- V(2, y) = e^(2y)  
-- V(x, 0) = 1  
-- V(x, 1) = e^x
-
-**Solución exacta:**  
-V(x, y) = e^(xy)
-
-**Interpretación:**  
-Caso de verificación con solución conocida.
+- $V(0, y) = 1$  
+- $V(2, y) = e^{2y}$  
+- $V(x, 0) = 1$  
+- $V(x, 1) = e^x$
 
 ---
 
 ### Ejemplo 2: Ecuación de Laplace
 
-**Ecuación diferencial:**  
-∇²V = 0
+**Ecuación diferencial:**
 
-**Dominio:** [1, 2] × [0, 1]  
+$$
+\nabla^2 V = 0
+$$
+
+**Solución exacta:**
+
+$$
+V(x, y) = \ln(x^2 + y^2)
+$$
+
+**Dominio:** $[1, 2] \times [0, 1]$  
 **Condiciones de frontera:**
-- V(1, y) = ln(y² + 1)  
-- V(2, y) = ln(y² + 4)  
-- V(x, 0) = 2ln(x)  
-- V(x, 1) = ln(x² + 1)
-
-**Solución exacta:**  
-V(x, y) = ln(x² + y²)
-
-**Interpretación:**  
-Problema clásico de equilibrio, útil en electrostática y flujo potencial.
+- $V(1, y) = \ln(y^2 + 1)$  
+- $V(2, y) = \ln(y^2 + 4)$  
+- $V(x, 0) = 2\ln(x)$  
+- $V(x, 1) = \ln(x^2 + 1)$
 
 ---
 
 ### Ejemplo 3: Fuente Constante
 
-**Ecuación diferencial:**  
-∇²V = 4
+**Ecuación diferencial:**
 
-**Dominio:** [1, 2] × [0, 2]  
+$$
+\nabla^2 V = 4
+$$
+
+**Solución exacta:**
+
+$$
+V(x, y) = (x - y)^2
+$$
+
+**Dominio:** $[1, 2] \times [0, 2]$  
 **Condiciones de frontera:**
-- V(1, y) = (1−y)²  
-- V(2, y) = (2−y)²  
-- V(x, 0) = x²  
-- V(x, 2) = (x−2)²
-
-**Solución exacta:**  
-V(x, y) = (x − y)²
-
-**Interpretación:**  
-Generación uniforme de calor, carga constante o presión constante sobre una membrana.
+- $V(1, y) = (1 - y)^2$  
+- $V(2, y) = (2 - y)^2$  
+- $V(x, 0) = x^2$  
+- $V(x, 2) = (x - 2)^2$
 
 ---
 
 ### Ejemplo 4: Fuente Racional
 
-**Ecuación diferencial:**  
-∇²V = x/y + y/x
+**Ecuación diferencial:**
 
-**Dominio:** [1, 2] × [1, 2]  
+$$
+\nabla^2 V = \frac{x}{y} + \frac{y}{x}
+$$
+
+**Solución exacta:**
+
+$$
+V(x, y) = xy \ln(xy)
+$$
+
+**Dominio:** $[1, 2] \times [1, 2]$  
 **Condiciones de frontera:**
-- V(1, y) = y·ln(y)  
-- V(2, y) = 2y·ln(2y)  
-- V(x, 1) = x·ln(x)  
-- V(x, 2) = x·ln(4x²)
-
-**Solución exacta:**  
-V(x, y) = xy·ln(xy)
-
-**Interpretación:**  
-Dependencias racionales en el término fuente, comportamiento logarítmico.
+- $V(1, y) = y\ln(y)$  
+- $V(2, y) = 2y\ln(2y)$  
+- $V(x, 1) = x\ln(x)$  
+- $V(x, 2) = x\ln(4x^2)$
 
 ---
 
 ## Métodos Numéricos
 
 - **Discretización:** Diferencias finitas centradas.
-- **Iteración:** Jacobi / Gauss-Seidel.
-- **Criterio de convergencia:**  
-  \[
-  \max_{i,j} |V^{(n+1)}_{i,j} - V^{(n)}_{i,j}| < 10^{-6}
-  \]
+
+\[
+\nabla^2 V \approx \frac{V_{i+1,j} - 2V_{i,j} + V_{i-1,j}}{h^2} + \frac{V_{i,j+1} - 2V_{i,j} + V_{i,j-1}}{k^2}
+\]
+
+- **Iteración:** Método de Jacobi / Gauss-Seidel.
+
+\[
+V^{(n+1)}_{i,j} = \frac{
+(V^{(n)}_{i+1,j} + V^{(n)}_{i-1,j})k^2 + (V^{(n)}_{i,j+1} + V^{(n)}_{i,j-1})h^2 \pm f_{i,j} h^2 k^2
+}{
+2(h^2 + k^2)
+}
+\]
+
+- **Criterio de convergencia:**
+
+\[
+\max_{i,j} |V^{(n+1)}_{i,j} - V^{(n)}_{i,j}| < 10^{-6}
+\]
 
 ---
 
-## Paralelización con OpenMP
-
-Se probaron diferentes estrategias:
+## ⚙️ Paralelización con OpenMP
 
 | Actividad | Estrategia                             |
 |----------|----------------------------------------|
@@ -149,18 +173,16 @@ Se probaron diferentes estrategias:
 | 7        | División del dominio con `task` y `taskwait` |
 
 **Observaciones clave:**
-- La directiva `parallel for` con `reduction(max:delta)` fue la más eficiente y sencilla.
-- El uso de `schedule(dynamic)` aumentó el overhead en la mayoría de los casos.
-- `critical` es útil para contadores compartidos, pero puede ralentizar si se usa mal.
+
+- `reduction(max:delta)` es fundamental para evitar condiciones de carrera.
+- `schedule(static)` ofrece mejor rendimiento en dominios regulares.
+- `task` es más flexible pero introduce mayor overhead.
 
 ---
 
-## Comparación de Rendimiento
+## 📊 Comparación de Rendimiento
 
-Se midió el rendimiento en todos los ejemplos. En general, se observó:
-
-- Reducción drástica del tiempo respecto al código secuencial.
-- Cada estrategia tiene ventajas en diferentes contextos.
-- Para cargas balanceadas, `schedule(static)` fue más eficiente.
+Se observaron mejoras notables en el rendimiento, siendo el uso de `parallel for` con reducción la mejor opción en la mayoría de los casos.
 
 ---
+
